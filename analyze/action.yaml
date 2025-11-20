@@ -87,6 +87,7 @@ runs:
     env:
       VERBOSE: ${{ inputs.verbose }}
       CUSTOM_RULE_FILE: ${{ inputs.custom-rule-file }}
+      FALCO_VERSION: ${{ inputs.falco-version }}
     id: start_falco
     run: |
       if [ "$VERBOSE" = "true" ]; then
@@ -111,10 +112,18 @@ runs:
         MOUNT_CUSTOM_RULE="-v $CUSTOM_RULE_FILE:/etc/falco/rules.d/custom_rules.yaml"
       fi
 
+      IMAGE="falcosecurity/falco-no-driver"
+      # If the version string starts with "sha256:", use @digest syntax
+      if [[ "$FALCO_VERSION" =~ ^sha256: ]]; then
+        FULL_IMAGE="${IMAGE}@${FALCO_VERSION}"
+      else
+        FULL_IMAGE="${IMAGE}:${FALCO_VERSION}"
+      fi
+
       docker run --rm --name falco \
         -v /tmp:/tmp \
         $MOUNT_CUSTOM_RULE \
-        falcosecurity/falco-no-driver:${{ inputs.falco-version }} falco -o "json_output=true" -o "file_output.enabled=true" -o "file_output.keep_alive=false" -o "file_output.filename=/tmp/falco_events.json" -o "engine.kind=replay" -o "engine.replay.capture_file=/tmp/capture.scap" 
+        "$FULL_IMAGE" falco -o "json_output=true" -o "file_output.enabled=true" -o "file_output.keep_alive=false" -o "file_output.filename=/tmp/falco_events.json" -o "engine.kind=replay" -o "engine.replay.capture_file=/tmp/capture.scap" 
 
   - name: Extract outbound connections
     if: ${{ inputs.extract-connections == 'true' }}
