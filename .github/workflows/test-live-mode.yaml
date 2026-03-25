@@ -14,7 +14,7 @@ jobs:
       actions: read
     steps:
     - name: Start Falco
-      uses: falcosecurity/falco-actions/start@dbd1251c3b5e2aef470b1e08b883629ee53ab373
+      uses: falcosecurity/falco-actions/start@54d299d4c40de1ad6bf680fefbbfed1bc5b8f057
       with:
         mode: live
         falco-version: '0.39.0'
@@ -35,7 +35,7 @@ jobs:
         groups
 
     - name: Stop Falco
-      uses: falcosecurity/falco-actions/stop@dbd1251c3b5e2aef470b1e08b883629ee53ab373
+      uses: falcosecurity/falco-actions/stop@54d299d4c40de1ad6bf680fefbbfed1bc5b8f057
       with:
         mode: live
         verbose: true
@@ -47,7 +47,7 @@ jobs:
       actions: read
     steps:
     - name: Start Falco
-      uses: falcosecurity/falco-actions/start@dbd1251c3b5e2aef470b1e08b883629ee53ab373
+      uses: falcosecurity/falco-actions/start@54d299d4c40de1ad6bf680fefbbfed1bc5b8f057
       with:
         mode: live
         falco-version: '0.39.0'
@@ -65,7 +65,7 @@ jobs:
         sleep 3
 
     - name: Stop Falco
-      uses: falcosecurity/falco-actions/stop@dbd1251c3b5e2aef470b1e08b883629ee53ab373
+      uses: falcosecurity/falco-actions/stop@54d299d4c40de1ad6bf680fefbbfed1bc5b8f057
       with:
         mode: live
         verbose: true
